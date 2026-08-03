@@ -34,5 +34,6 @@
   },
   "socket": true,
   "download": "https://github.com/gryvon/brfb/releases/download/v0.0.1/brfbv0.0.1.zip",
-  "url": "https://github.com/gryvon/brfb"
+  "url": "https://github.com/gryvon/brfb",
+  "manifest": "https://raw.githubusercontent.com/gryvon/brfb/refs/heads/main/module.json"
 }
