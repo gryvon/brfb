@@ -103,7 +103,7 @@ await new Sequence()
   // Projectile
   .effect()
   .file(
-    "modules/big-red-fart-button/assets/middle-finger.png"
+    `modules/${MODULE_ID}/assets/middle-finger.png`
   )
   .atLocation(source)
   .moveTowards(target)
@@ -126,7 +126,7 @@ await new Sequence()
   // Impact
 .effect()
 .file(
-  "modules/big-red-fart-button/assets/middle-finger.png"
+  `modules/${MODULE_ID}/assets/middle-finger.png`
 )
 .atLocation(target)
 //.spriteRotation(-90)
@@ -260,7 +260,7 @@ export async function showAchievement(data) {
   }, 30000);
 
   await foundry.audio.AudioHelper.play({
-  src: "modules/big-red-fart-button/sounds/achievement.mp3",
+  src: `modules/${MODULE_ID}/sounds/achievement.mp3`,
   volume: 0.7
   });
 }

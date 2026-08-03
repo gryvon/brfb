@@ -102,18 +102,18 @@ export const FART_MESSAGES = [
 ];
 
 export const FART_SOUNDS = [
-  "modules/big-red-fart-button/sounds/fart1.mp3",
-  "modules/big-red-fart-button/sounds/fart2.mp3",
-  "modules/big-red-fart-button/sounds/fart3.mp3",
-  "modules/big-red-fart-button/sounds/fart4.mp3",
-  "modules/big-red-fart-button/sounds/fart5.mp3",
-  "modules/big-red-fart-button/sounds/fart6.mp3",
-  "modules/big-red-fart-button/sounds/fart7.mp3"
+  `modules/${MODULE_ID}/sounds/fart1.mp3`,
+  `modules/${MODULE_ID}/sounds/fart2.mp3`,
+  `modules/${MODULE_ID}/sounds/fart3.mp3`,
+  `modules/${MODULE_ID}/sounds/fart4.mp3`,
+  `modules/${MODULE_ID}/sounds/fart5.mp3`,
+  `modules/${MODULE_ID}/sounds/fart6.mp3`,
+  `modules/${MODULE_ID}/sounds/fart7.mp3`
 
 ];
 
 export const FU_SOUNDS = [
-  "modules/big-red-fart-button/sounds/fu1.mp3"
+  `modules/${MODULE_ID}/sounds/fu1.mp3`
 //  "modules/big-red-fart-button/sounds/fu2.mp3",
 //  "modules/big-red-fart-button/sounds/fu3.mp3"
 ];
