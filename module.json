@@ -32,9 +32,7 @@
       }
     ]
   },
-  "socket": true
-
-
-
-
+  "socket": true,
+  "download": "https://github.com/gryvon/brfb/releases/download/v0.0.1/brfbv0.0.1.zip",
+  "url": "https://github.com/gryvon/brfb"
 }
