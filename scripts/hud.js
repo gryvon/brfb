@@ -2,7 +2,6 @@ import { MODULE_ID, FART_COOLDOWN, FU_COOLDOWN, FART_MESSAGES } from "./constant
 import { brfbSocket } from "./socket.js";
 import { unlockAchievement, unlockPlayerAchievement } from "./effects.js";
 
-
 let lastFart = 0;
 let lastFU = 0;
 

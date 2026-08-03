@@ -1,4 +1,4 @@
-export const MODULE_ID = "big-red-fart-button";
+export const MODULE_ID = "brfb";
 
 export const FART_COOLDOWN = 15000;
 export const FU_COOLDOWN = 15000;
