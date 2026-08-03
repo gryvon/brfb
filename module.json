@@ -1,0 +1,40 @@
+{
+  "id": "brfb",
+  "title": "Big Red Fart Button",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "You"
+    }
+  ],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/brfb.css"
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "socketlib",
+        "type": "module"
+      },
+      {
+        "id": "sequencer",
+        "type": "module"
+      },{
+        "id": "JB2A_DnD5e",
+        "type": "module"
+      }
+    ]
+  },
+  "socket": true
+
+
+
+
+}
