@@ -285,6 +285,17 @@ export async function floatingText(token, text, duration=4000) {
   await brfbSocket.executeForEveryone("floatingTextOnToken", token.id, text, duration);
 }
 
+export async function playSound(soundfile) {
+  await brfbSocket.executeForEveryone("playGlobalSound", soundfile)
+}
+
+export async function playGlobalSound(soundfile, volume=0.8) {
+  await foundry.audio.AudioHelper.play({
+    src: `modules/${MODULE_ID}/sounds/${soundfile}`,
+    volume: volume
+  });
+}
+
 export async function floatingTextOnToken(tokenId, text, duration=4000) {
   const token = canvas.tokens.get(tokenId);
   if (!token) { return; }
@@ -301,6 +312,11 @@ export async function floatingTextOnToken(tokenId, text, duration=4000) {
     .fadeIn(250)
     .fadeOut(500)
     .play();
+}
+
+export async function sillyGoose(token) {
+  await playSound("goose_honk.mp3");
+  await floatingText(token, "🪿", 15000);
 }
 
 export async function showHallOfShame(data) {

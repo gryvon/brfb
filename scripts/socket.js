@@ -1,4 +1,4 @@
-import { playFartEffects, playFUEffects, showAchievement, showHallOfShame, cropDust, floatingTextOnToken } from "./effects.js";
+import { playFartEffects, playFUEffects, showAchievement, showHallOfShame, cropDust, floatingTextOnToken, playGlobalSound } from "./effects.js";
 import { incrementFartCount, incrementFUCount, lockPlayerAchievement, incrementFUVictimCount, incrementCropDustCount } from "./counters.js";
 import { MODULE_ID } from "./constants.js";
 
@@ -31,4 +31,6 @@ export function registerSocketHandlers() {
   brfbSocket.register("incrementCropDustCount", incrementCropDustCount);
 
   brfbSocket.register("floatingTextOnToken", floatingTextOnToken);
+
+  brfbSocket.register("playGlobalSound", playGlobalSound);
 }
