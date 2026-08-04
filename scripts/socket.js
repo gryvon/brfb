@@ -1,5 +1,5 @@
 import { playFartEffects, playFUEffects, showAchievement, showHallOfShame, cropDust } from "./effects.js";
-import { incrementFartCount, incrementFUCount, lockPlayerAchievement, incrementFUVictimCount } from "./counters.js";
+import { incrementFartCount, incrementFUCount, lockPlayerAchievement, incrementFUVictimCount, incrementCropDustCount } from "./counters.js";
 import { MODULE_ID } from "./constants.js";
 
 export let brfbSocket;
@@ -28,4 +28,5 @@ export function registerSocketHandlers() {
 
   brfbSocket.register("cropDust", cropDust);
 
+  brfbSocket.register("incrementCropDustCount", incrementCropDustCount);
 }

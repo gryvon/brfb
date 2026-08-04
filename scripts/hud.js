@@ -112,8 +112,8 @@ async function fartPressed() {
   await new Promise(resolve => setTimeout(resolve, 2400));
 
   await brfbSocket.executeAsGM("incrementFartCount", game.user);
-
-  await brfbSocket.executeAsGM("cropDust", selected);
+  await brfbSocket.executeForEveryone("cropDust", selected.map(t => t.id));
+  await brfbSocket.executeAsGM("incrementCropDustCount", selected.map(t => t.id));
 }
 
 async function fuPressed() {

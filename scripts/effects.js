@@ -258,35 +258,26 @@ export async function showAchievement(data) {
   });
 }
 
-export async function cropDust(sourceTokens) {
+export async function cropDust(tokenIds) {
+  const sourceTokens = tokenIds.map(id => canvas.tokens.get(id)).filter(Boolean);
 
-    const scores = game.settings.get(MODULE_ID, "playerScores");
+  let users = [];
 
-    for (const sourceToken of sourceTokens) {
+  for (const sourceToken of sourceTokens) {
       const radius = canvas.dimensions.size * 4;
       const nearbyTokens = canvas.tokens.placeables.filter(token => {
-      if (token.id === sourceToken.id) { return false; }
-      const dx = sourceToken.center.x - token.center.x;
-      const dy = sourceToken.center.y - token.center.y;
-      const distance = Math.hypot(dx, dy);
-      return distance <= radius;
-      });
+        if (token.id === sourceToken.id) { return false; }
+        const dx = sourceToken.center.x - token.center.x;
+        const dy = sourceToken.center.y - token.center.y;
+        const distance = Math.hypot(dx, dy);
+        return distance <= radius;
+    });    
 
-      for (const target of nearbyTokens) {
-        const reaction = randomItem(["🤢","😷","💀","🤮","😠","☣️"]);
-        canvas.interface.createScrollingText(target.center, reaction, { anchor: CONST.TEXT_ANCHOR_POINTS.TOP, duration: 5000 });
-        const actor = target.actor;
-        if (!actor) continue;
-        const users = game.users.filter(user => !user.isGM && actor.testUserPermission(user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER));
-        for (const user of users) {
-          scores[user.id] ??= {};
-          const count = scores[user.id].crop_dusted_count ?? 0;
-
-          scores[user.id].crop_dusted_count = count + 1;
-        }
-      }
+    for (const target of nearbyTokens) {
+      const reaction = randomItem(["🤢","😷","💀","🤮","😠","☣️"]);
+      canvas.interface.createScrollingText(target.center, reaction, { anchor: CONST.TEXT_ANCHOR_POINTS.TOP, duration: 5000 });
     }
-  await game.settings.set(MODULE_ID, "playerScores", scores);
+  }
 }
 
 export async function showHallOfShame(data) {
