@@ -280,6 +280,29 @@ export async function cropDust(tokenIds) {
   }
 }
 
+export async function floatingText(token, text, duration=4000) {
+  console.log(token, text, duration);
+  await brfbSocket.executeForEveryone("floatingTextOnToken", token.id, text, duration);
+}
+
+export async function floatingTextOnToken(tokenId, text, duration=4000) {
+  const token = canvas.tokens.get(tokenId);
+  if (!token) { return; }
+  await new Sequence()
+    .effect()
+    .text(text)
+    .attachTo(token, {
+      offset: {
+        y: -canvas.dimensions.size * 0.75
+      },
+      bindRotation: false
+    })
+    .duration(duration)
+    .fadeIn(250)
+    .fadeOut(500)
+    .play();
+}
+
 export async function showHallOfShame(data) {
 
   const existing =
