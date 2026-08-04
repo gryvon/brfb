@@ -1,7 +1,7 @@
 import { MODULE_ID } from "./constants.js";
 import { createHUD } from "./hud.js";
 import { registerSocketHandlers, brfbSocket } from "./socket.js";
-import { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound } from "./effects.js";
+import { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound, sillyGoose } from "./effects.js";
 
 Hooks.once("init", () => {
 
@@ -110,6 +110,6 @@ Hooks.on("createChatMessage", async (message) => {
 
 Hooks.once("ready", () => {
   createHUD();
-  globalThis.BRFB = { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound };
+  globalThis.BRFB = { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound, sillyGoose };
 });
 
