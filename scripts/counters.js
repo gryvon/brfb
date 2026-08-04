@@ -138,7 +138,6 @@ export async function incrementFUCount(user) {
 }
 
 export async function lockPlayerAchievement(user, tag) {
-	console.log("User", user);
 	const achievements = game.settings.get(MODULE_ID, "playerAchievements");
 	const userId = user._id;
 	achievements[userId] ??= []
