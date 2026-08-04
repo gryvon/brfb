@@ -24,6 +24,7 @@
       "type": "Macro",
       "path": "packs/big-red-fart-button-macros",
       "system": "fate-core-official",
+      "banner": "modules/brfb/assets/banner.jpg",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
