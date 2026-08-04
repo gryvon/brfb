@@ -387,11 +387,11 @@ export async function hallOfShame() {
 
   for (const [userId, stats] of Object.entries(scores)) {
 
-    const user =
-      game.users.get(userId);
+    const user = game.users.get(userId);
 
-    const name =
-      user?.name ?? "Unknown Degenerate";
+    if (!user || user.isGM) { continue; }
+
+    const name = user?.name ?? "Unknown Degenerate";
 
     farters.push({ name, value: stats.fart_count ?? 0 });
 
