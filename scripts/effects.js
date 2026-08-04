@@ -275,7 +275,8 @@ export async function cropDust(tokenIds) {
 
     for (const target of nearbyTokens) {
       const reaction = randomItem(["🤢","😷","💀","🤮","😠","☣️"]);
-      canvas.interface.createScrollingText(target.center, reaction, { anchor: CONST.TEXT_ANCHOR_POINTS.TOP, duration: 5000 });
+      await floatingText(target, reaction, 30000);
+      //canvas.interface.createScrollingText(target.center, reaction, { anchor: CONST.TEXT_ANCHOR_POINTS.TOP, duration: 5000 });
     }
   }
 }
@@ -305,84 +306,72 @@ export async function floatingTextOnToken(tokenId, text, duration=4000) {
 
 export async function showHallOfShame(data) {
 
-  const existing =
-    document.querySelector(
-      "#brfb-hall-of-shame"
-    );
+  const existing = document.querySelector( "#brfb-hall-of-shame" );
 
-  if (existing) {
-    existing.remove();
-  }
+  if (existing) { existing.remove(); }
 
-  const overlay =
-    document.createElement("div");
+  const overlay = document.createElement("div");
 
-  overlay.id =
-    "brfb-hall-of-shame";
+  overlay.id = "brfb-hall-of-shame";
 
-overlay.innerHTML = `
+  overlay.innerHTML = `
+    <div class="brfb-hos-frame">
 
-  <div class="brfb-hos-frame">
-
-    <div class="brfb-hos-title">
-      🏆 HALL OF SHAME 🏆
-    </div>
-
-    <div class="brfb-hos-grid">
-
-      <div class="brfb-hos-section">
-        <div class="brfb-hos-header">
-          💨 Greatest Flatulence
-        </div>
-
-        ${data.farters}
+      <div class="brfb-hos-title">
+        🏆 HALL OF SHAME 🏆
       </div>
 
-      <div class="brfb-hos-section">
-        <div class="brfb-hos-header">
-          🦨 Most Crop Dusted
+      <div class="brfb-hos-grid">
+
+        <div class="brfb-hos-section">
+          <div class="brfb-hos-header">
+            💨 Greatest Flatulence
+          </div>
+
+          ${data.farters}
         </div>
 
-        ${data.crop_dusted}
+        <div class="brfb-hos-section">
+          <div class="brfb-hos-header">
+            🦨 Most Crop Dusted
+          </div>
+
+          ${data.crop_dusted}
+        </div>
+
+        <div class="brfb-hos-section">
+          <div class="brfb-hos-header">
+            🖕 Professional Haters
+          </div>
+
+          ${data.haters}
+        </div>
+
+        <div class="brfb-hos-section">
+          <div class="brfb-hos-header">
+            😡 Most Victimized
+          </div>
+
+          ${data.victims}
+        </div>
+
       </div>
 
-      <div class="brfb-hos-section">
-        <div class="brfb-hos-header">
-          🖕 Professional Haters
-        </div>
-
-        ${data.haters}
-      </div>
-
-      <div class="brfb-hos-section">
-        <div class="brfb-hos-header">
-          😡 Most Victimized
-        </div>
-
-        ${data.victims}
+      <div class="brfb-hos-footer">
+        ${data.commentary}
       </div>
 
     </div>
-
-    <div class="brfb-hos-footer">
-      ${data.commentary}
-    </div>
-
-  </div>
-`;
+  `;
 
   await foundry.audio.AudioHelper.play({
     src: `modules/${MODULE_ID}/sounds/hall-of-shame.mp3`,
     volume: 0.8
   });
 
-  document.body.appendChild(
-    overlay
-  );
+  document.body.appendChild(overlay);
 
-  overlay.addEventListener(
-    "click",
-    () => {
+  overlay.addEventListener("click", () => {
 
       overlay.classList.add(
         "brfb-hos-hide"
