@@ -415,6 +415,10 @@ export async function hallOfShame() {
 
   haters.sort((a, b) => b.value - a.value );
 
+  victims.sort((a, b) => b.value - a.value );
+
+  crop_dusted.sort((a, b) => b.value - a.value );
+
   const data = {
     farters: makeRows(farters.slice(0, 10)),
 
