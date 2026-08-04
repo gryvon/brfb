@@ -275,7 +275,7 @@ export async function cropDust(tokenIds) {
 
     for (const target of nearbyTokens) {
       const reaction = randomItem(["🤢","😷","💀","🤮","😠","☣️"]);
-      await floatingText(target, reaction, 30000);
+      await floatingText(target, reaction, 15000);
       //canvas.interface.createScrollingText(target.center, reaction, { anchor: CONST.TEXT_ANCHOR_POINTS.TOP, duration: 5000 });
     }
   }
