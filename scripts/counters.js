@@ -14,7 +14,7 @@ export async function incrementFartCount(user) {
 //    }
 
     if (newCount === 50) {
-        await unlockPlayerAchievement(user, "fart_50", "Session Recap", "50 Farts Released");
+        await unlockPlayerAchievement(user, "fart_50", "Session Recrap", "50 Farts Released");
     }
 
     if (newCount === 100) {
@@ -24,6 +24,58 @@ export async function incrementFartCount(user) {
     scores[user._id].fart_count = newCount;
 
     await game.settings.set(MODULE_ID, "playerScores", scores);
+}
+
+export async function incrementFUVictimCount(targets) {
+
+    const scores =
+        game.settings.get(
+            MODULE_ID,
+            "playerScores"
+        );
+
+    for (const target of targets) {
+
+        const actor = target.actor;
+
+        if (!actor) continue;
+
+        const owningUsers = game.users.filter(
+            user =>
+                !user.isGM &&
+                actor.testUserPermission(
+                    user,
+                    CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
+                )
+        );
+
+        if (!owningUsers.length) {
+            continue; // NPC
+        }
+
+        for (const user of owningUsers) {
+
+            scores[user.id] ??= {};
+
+            const count =
+                scores[user.id]
+                    .fu_victim_count ?? 0;
+
+            const newCount =
+                count + 1;
+
+            // Achievements later
+
+            scores[user.id]
+                .fu_victim_count = newCount;
+        }
+    }
+
+    await game.settings.set(
+        MODULE_ID,
+        "playerScores",
+        scores
+    );
 }
 
 export async function incrementFUCount(user) {

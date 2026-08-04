@@ -108,7 +108,12 @@ async function fartPressed() {
   const payload = selected.map( token => ({ tokenId: token.id, message: randomItem(FART_MESSAGES) }) );
 
   await brfbSocket.executeForEveryone("playFartEffects", payload);
+  
+  await new Promise(resolve => setTimeout(resolve, 2400));
+
   await brfbSocket.executeAsGM("incrementFartCount", game.user);
+
+  await brfbSocket.executeAsGM("cropDust", selected);
 }
 
 async function fuPressed() {
@@ -144,6 +149,7 @@ async function fuPressed() {
 
   await brfbSocket.executeForEveryone("playFUEffects", { sourceId: selected[0].id, targetIds: targets.map(t => t.id) });
   await brfbSocket.executeAsGM("incrementFUCount", game.user);
+  await brfbSocket.executeAsGM("incrementFUVictimCount", targets);
 }
 
 async function toggleHUD(hud) {

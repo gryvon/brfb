@@ -1,7 +1,7 @@
 import { MODULE_ID } from "./constants.js";
 import { createHUD } from "./hud.js";
 import { registerSocketHandlers, brfbSocket } from "./socket.js";
-import { unlockAchievement, unlockPlayerAchievement } from "./effects.js";
+import { unlockAchievement, unlockPlayerAchievement, hallOfShame } from "./effects.js";
 
 Hooks.once("init", () => {
 
@@ -98,14 +98,18 @@ Hooks.on("createChatMessage", async (message) => {
     dice.results.length === 4 &&
     dice.results.every(r => r.result === -1);
 
-  if (!allMinus) return;
+  if (allMinus) {
+    await unlockPlayerAchievement(user, "rolled_like_shit", "TASK FAILED SUCCESSFULLY!", "Rolled - - - -")
+  }
 
-  await unlockPlayerAchievement(user, "rolled_like_shit", "Rolled like absolute shit!", "Rolled - - - -")
+  const total = roll.total;
 
+  // Poor Rolls Dresden Narrator Here.
+ 
 });
 
 Hooks.once("ready", () => {
   createHUD();
-  globalThis.BRFB = { unlockAchievement, unlockPlayerAchievement };
+  globalThis.BRFB = { unlockAchievement, unlockPlayerAchievement, hallOfShame };
 });
 

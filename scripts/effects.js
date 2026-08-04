@@ -71,11 +71,11 @@ canvas.interface.createScrollingText(
     direction: CONST.TEXT_ANCHOR_POINTS.TOP,
 
     fontSize: 24,
-    fill: "#b8c46a",          // Sickly fart yellow-green
+    fill: "#b8c46a",
     stroke: "#000000",
     strokeThickness: 6,
 
-    duration: 4000
+    duration: 8000
   }
 );
 }
@@ -86,7 +86,7 @@ new Sequence()
   .effect()
   .file("jb2a.smoke.puff.ring.01.white")
   .attachTo(token)
-  .tint("#6B5B3E")
+  .tint("#6B5B3E") // aka "fart brown"
   .opacity(0.65)
   .scale(3.0)
   .fadeIn(0)
@@ -188,7 +188,6 @@ export async function unlockAchievement(tag, title, subtitle) {
     "fartAchievements",
     unlocked
   );
-
 }
 
 export async function unlockPlayerAchievement(user, tag, title, subtitle) {
@@ -207,17 +206,11 @@ export async function showAchievement(data) {
 
   const user = data.user ?? null;
 
-  const existing =
-    document.querySelector(
-      "#brfb-achievement"
-    );
+  const existing = document.querySelector("#brfb-achievement");
 
-  if (existing) {
-    existing.remove();
-  }
+  if (existing) { existing.remove(); }
 
-  const overlay =
-    document.createElement("div");
+  const overlay = document.createElement("div");
 
   overlay.id = "brfb-achievement";
 
@@ -225,7 +218,7 @@ export async function showAchievement(data) {
     <div class="brfb-achievement-frame">
 
       <div class="brfb-achievement-header">
-        ACHIEVEMENT UNLOCKED
+        🏆 ACHIEVEMENT UNLOCKED
       </div>
 
       ${
@@ -253,14 +246,216 @@ export async function showAchievement(data) {
     overlay.classList.add(
       "brfb-achievement-hide"
     );
-  }, 3500);
+  }, 5000);
 
   setTimeout(() => {
     overlay.remove();
-  }, 30000);
+  }, 6000);
 
   await foundry.audio.AudioHelper.play({
   src: `modules/${MODULE_ID}/sounds/achievement.mp3`,
   volume: 0.7
   });
+}
+
+export async function cropDust(sourceTokens) {
+
+    const scores = game.settings.get(MODULE_ID, "playerScores");
+
+    for (const sourceToken of sourceTokens) {
+      const radius = canvas.dimensions.size * 4;
+      const nearbyTokens = canvas.tokens.placeables.filter(token => {
+      if (token.id === sourceToken.id) { return false; }
+      const dx = sourceToken.center.x - token.center.x;
+      const dy = sourceToken.center.y - token.center.y;
+      const distance = Math.hypot(dx, dy);
+      return distance <= radius;
+      });
+
+      for (const target of nearbyTokens) {
+        const reaction = randomItem(["🤢","😷","💀","🤮","😠","☣️"]);
+        canvas.interface.createScrollingText(target.center, reaction, { anchor: CONST.TEXT_ANCHOR_POINTS.TOP, duration: 5000 });
+        const actor = target.actor;
+        if (!actor) continue;
+        const users = game.users.filter(user => !user.isGM && actor.testUserPermission(user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER));
+        for (const user of users) {
+          scores[user.id] ??= {};
+          const count = scores[user.id].crop_dusted_count ?? 0;
+
+          scores[user.id].crop_dusted_count = count + 1;
+        }
+      }
+    }
+  await game.settings.set(MODULE_ID, "playerScores", scores);
+}
+
+export async function showHallOfShame(data) {
+
+  const existing =
+    document.querySelector(
+      "#brfb-hall-of-shame"
+    );
+
+  if (existing) {
+    existing.remove();
+  }
+
+  const overlay =
+    document.createElement("div");
+
+  overlay.id =
+    "brfb-hall-of-shame";
+
+overlay.innerHTML = `
+
+  <div class="brfb-hos-frame">
+
+    <div class="brfb-hos-title">
+      🏆 HALL OF SHAME 🏆
+    </div>
+
+    <div class="brfb-hos-grid">
+
+      <div class="brfb-hos-section">
+        <div class="brfb-hos-header">
+          💨 Greatest Flatulence
+        </div>
+
+        ${data.farters}
+      </div>
+
+      <div class="brfb-hos-section">
+        <div class="brfb-hos-header">
+          🦨 Most Crop Dusted
+        </div>
+
+        ${data.crop_dusted}
+      </div>
+
+      <div class="brfb-hos-section">
+        <div class="brfb-hos-header">
+          🖕 Professional Haters
+        </div>
+
+        ${data.haters}
+      </div>
+
+      <div class="brfb-hos-section">
+        <div class="brfb-hos-header">
+          😡 Most Victimized
+        </div>
+
+        ${data.victims}
+      </div>
+
+    </div>
+
+    <div class="brfb-hos-footer">
+      ${data.commentary}
+    </div>
+
+  </div>
+`;
+
+  await foundry.audio.AudioHelper.play({
+    src: `modules/${MODULE_ID}/sounds/hall-of-shame.mp3`,
+    volume: 0.8
+  });
+
+  document.body.appendChild(
+    overlay
+  );
+
+  overlay.addEventListener(
+    "click",
+    () => {
+
+      overlay.classList.add(
+        "brfb-hos-hide"
+      );
+
+      setTimeout(() => {
+        overlay.remove();
+      }, 500);
+    }
+  );
+}
+
+export async function hallOfShame() {
+
+  const scores =
+    game.settings.get(
+      MODULE_ID,
+      "playerScores"
+    );
+
+  const farters = [];
+  const haters = [];
+  const victims = [];
+  const crop_dusted = [];
+
+  for (const [userId, stats] of Object.entries(scores)) {
+
+    const user =
+      game.users.get(userId);
+
+    const name =
+      user?.name ?? "Unknown Degenerate";
+
+    farters.push({ name, value: stats.fart_count ?? 0 });
+
+    haters.push({ name, value: stats.fu_count ?? 0 });
+
+    victims.push({ name, value: stats.fu_victim_count ?? 0});
+
+    crop_dusted.push({ name, value: stats.crop_dusted_count ?? 0});
+  }
+
+  farters.sort( (a, b) => b.value - a.value );
+
+  haters.sort((a, b) => b.value - a.value );
+
+  const data = {
+    farters: makeRows(farters.slice(0, 10)),
+
+    haters: makeRows(haters.slice(0, 10)),
+
+    victims: makeRows(victims.slice(0, 10)),
+
+    crop_dusted: makeRows(crop_dusted.slice(0, 10)),
+
+    commentary: randomItem([
+      "The White Council is deeply concerned.",
+      "History will judge you.",
+      "The atmosphere deserves compensation.",
+      "Several crimes have occurred.",
+      "The numbers speak for themselves.",
+      "Mouse is disappointed.",
+      "Mab would like a word.",
+      "This is now part of the public record."
+    ])
+  };
+
+  await brfbSocket.executeForEveryone("showHallOfShame", data);
+}
+
+function makeRows(entries) {
+
+  return entries
+    .map((entry, index) => `
+
+      <div class="brfb-hos-row">
+
+        <span class="brfb-hos-name">
+          ${index + 1}. ${entry.name}
+        </span>
+
+        <span class="brfb-hos-value">
+          ${entry.value}
+        </span>
+
+      </div>
+
+    `)
+    .join("");
 }

@@ -1,5 +1,5 @@
-import { playFartEffects, playFUEffects, showAchievement } from "./effects.js";
-import { incrementFartCount, incrementFUCount, lockPlayerAchievement } from "./counters.js";
+import { playFartEffects, playFUEffects, showAchievement, showHallOfShame, cropDust } from "./effects.js";
+import { incrementFartCount, incrementFUCount, lockPlayerAchievement, incrementFUVictimCount } from "./counters.js";
 import { MODULE_ID } from "./constants.js";
 
 export let brfbSocket;
@@ -21,4 +21,11 @@ export function registerSocketHandlers() {
   brfbSocket.register("incrementFUCount", incrementFUCount);
 
   brfbSocket.register("lockPlayerAchievement", lockPlayerAchievement);
+
+  brfbSocket.register("showHallOfShame", showHallOfShame);
+
+  brfbSocket.register("incrementFUVictimCount", incrementFUVictimCount);
+
+  brfbSocket.register("cropDust", cropDust);
+
 }
