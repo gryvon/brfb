@@ -282,7 +282,6 @@ export async function cropDust(tokenIds) {
 }
 
 export async function floatingText(token, text, duration=4000) {
-  console.log(token, text, duration);
   await brfbSocket.executeForEveryone("floatingTextOnToken", token.id, text, duration);
 }
 
