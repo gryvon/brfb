@@ -2,8 +2,8 @@ import { MODULE_ID, FART_COOLDOWN, FU_COOLDOWN, FART_MESSAGES } from "./constant
 import { brfbSocket } from "./socket.js";
 import { unlockAchievement, unlockPlayerAchievement } from "./effects.js";
 
-let lastFart = 0;
-let lastFU = 0;
+let COOLDOWN = 15000;
+let lastPressed = 0;
 
 function randomItem(array) {
   return array[
@@ -44,12 +44,20 @@ export function createHUD() {
 
     <div class="brfb-content ${collapsed ? "collapsed" : ""}">
 
-      <button class="brfb-fart">
+      <button class="brfb-hud-button brfb-fart">
         💨
       </button>
 
-      <button class="brfb-fu">
+      <button class="brfb-hud-button brfb-fu">
         🖕
+      </button>
+
+      <button class="brfb-hud-button brfb-goose">
+        🪿
+      </button>
+
+      <button class="brfb-hud-button brfb-polka">
+        🎺
       </button>
 
     </div>
@@ -65,36 +73,34 @@ export function createHUD() {
 
 function activateListeners(hud) {
 
-  hud
-    .querySelector(".brfb-fart")
-    .addEventListener(
-      "click",
-      fartPressed
-    );
+  hud.querySelector(".brfb-fart").addEventListener("click", fartPressed);
 
-  hud
-    .querySelector(".brfb-fu")
-    .addEventListener(
-      "click",
-      fuPressed
-    );
+  hud.querySelector(".brfb-fu").addEventListener("click", fuPressed);
 
-  hud
-    .querySelector(".brfb-toggle")
-    .addEventListener(
-      "click",
-      () => toggleHUD(hud)
-    );
+  hud.querySelector(".brfb-goose").addEventListener("click", goosePressed);
+
+  hud.querySelector(".brfb-polka").addEventListener("click", polkaPressed);
+
+  hud.querySelector(".brfb-toggle").addEventListener("click",() => toggleHUD(hud));
+}
+
+function cooldown() {
+
+  const remain = COOLDOWN - (Date.now() - lastPressed);
+
+  if (remain > 0) {
+    ui.notifications.warn(`Cooldown: ${Math.ceil(remain / 1000)}s`);
+    return true;
+  }
+
+  lastPressed = Date.now();
+
+  return false;
 }
 
 async function fartPressed() {
 
-  const remain = FART_COOLDOWN - (Date.now() - lastFart);
-
-  if (remain > 0) {
-    ui.notifications.warn(`Cooldown: ${Math.ceil(remain / 1000)}s`);
-    return;
-  }
+  if (cooldown()) return;
 
   const selected = canvas.tokens.controlled;
 
@@ -102,8 +108,6 @@ async function fartPressed() {
     ui.notifications.warn("Select at least one token.");
     return;
   }
-
-  lastFart = Date.now();
 
   const payload = selected.map( token => ({ tokenId: token.id, message: randomItem(FART_MESSAGES) }) );
 
@@ -118,11 +122,7 @@ async function fartPressed() {
 
 async function fuPressed() {
 
-  const remain = FU_COOLDOWN - (Date.now() - lastFU);
-
-  if (remain > 0) { ui.notifications.warn(`Cooldown: ${Math.ceil(remain / 1000)}s`);
-    return;
-  }
+  if (cooldown()) return;
 
   const selected = canvas.tokens.controlled;
 
@@ -145,12 +145,32 @@ async function fuPressed() {
     return;
   }
 
-  lastFU = Date.now();
-
   await brfbSocket.executeForEveryone("playFUEffects", { sourceId: selected[0].id, targetIds: targets.map(t => t.id) });
   await brfbSocket.executeAsGM("incrementFUCount", game.user);
   await brfbSocket.executeAsGM("incrementFUVictimCount", targets);
 }
+
+async function goosePressed() {
+
+  if (cooldown()) return;
+
+  const selected = canvas.tokens.controlled[0];
+
+  await brfbSocket.executeForEveryone("playGlobalSound", "goose_honk.mp3");
+  await brfbSocket.executeForEveryone("floatingTextOnToken", selected.id, "🪿", 15000)
+
+}
+
+async function polkaPressed() {
+
+  if (cooldown()) return;
+
+  const selected = canvas.tokens.controlled[0];
+
+  await brfbSocket.executeForEveryone("polkaNeverDies", selected.id);
+
+}
+
 
 async function toggleHUD(hud) {
 

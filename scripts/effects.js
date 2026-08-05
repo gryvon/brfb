@@ -289,11 +289,10 @@ export async function playSound(soundfile) {
   await brfbSocket.executeForEveryone("playGlobalSound", soundfile)
 }
 
-export async function playGlobalSound(soundfile, volume=0.8) {
-  await foundry.audio.AudioHelper.play({
-    src: `modules/${MODULE_ID}/sounds/${soundfile}`,
-    volume: volume
-  });
+export async function playGlobalSound(soundfile, volume=0.8, duration=null) {
+ 
+  await foundry.audio.AudioHelper.play({src: `modules/${MODULE_ID}/sounds/${soundfile}`, volume: volume});
+
 }
 
 export async function floatingTextOnToken(tokenId, text, duration=4000) {
@@ -312,6 +311,43 @@ export async function floatingTextOnToken(tokenId, text, duration=4000) {
     .fadeIn(250)
     .fadeOut(500)
     .play();
+}
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms) );
+}
+
+export async function polkaNeverDies(tokenId) {
+
+  const token = canvas.tokens.get(tokenId);
+
+  if (!token) return;
+
+  await floatingText(token, "🎺 POLKA WILL NEVER DIE! 🎺", 8000);
+
+  await playSound("polka.mp3");
+
+  const mesh = token.mesh ?? token;
+
+  const startX = mesh.x;
+  const startY = mesh.y;
+
+  const start = Date.now();
+  const duration = 8000;
+
+  while (Date.now() - start < duration) {
+
+    const t = (Date.now() - start) / 1000;
+
+    mesh.x = startX + Math.sin(t * 8) * 8;
+
+    mesh.y = startY - Math.abs(Math.sin(t * 16)) * 6;
+
+    await wait(16);
+  }
+
+  mesh.x = startX;
+  mesh.y = startY;
 }
 
 export async function sillyGoose(token) {
