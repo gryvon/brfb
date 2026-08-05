@@ -102,19 +102,134 @@ export const FART_MESSAGES = [
 ];
 
 export const FART_SOUNDS = [
-  `modules/${MODULE_ID}/sounds/fart1.mp3`,
-  `modules/${MODULE_ID}/sounds/fart2.mp3`,
-  `modules/${MODULE_ID}/sounds/fart3.mp3`,
-  `modules/${MODULE_ID}/sounds/fart4.mp3`,
-  `modules/${MODULE_ID}/sounds/fart5.mp3`,
-  `modules/${MODULE_ID}/sounds/fart6.mp3`,
-  `modules/${MODULE_ID}/sounds/fart7.mp3`
+  `fart1.mp3`,
+  `fart2.mp3`,
+  `fart3.mp3`,
+  `fart4.mp3`,
+  `fart5.mp3`,
+  `fart6.mp3`,
+  `fart7.mp3`
 
 ];
 
 export const FU_SOUNDS = [
-  `modules/${MODULE_ID}/sounds/fu1.mp3`
-//  "modules/big-red-fart-button/sounds/fu2.mp3",
-//  "modules/big-red-fart-button/sounds/fu3.mp3"
+  `fu1.mp3`
 ];
 
+export const ACHIEVEMENTS = {
+
+  fart_count: [
+    {
+      value: 50,
+      tag: "fart_50",
+      title: "Session Recap",
+      subtitle: "50 Farts Released"
+    },
+    {
+      value: 100,
+      tag: "fart_100",
+      title: "Chemical Warfare",
+      subtitle: "100 Farts Released"
+    },
+    {
+      value: 250,
+      tag: "fart_250",
+      title: "Biological Weapons Program",
+      subtitle: "250 Farts Released"
+    }
+  ],
+
+  fu_count: [
+    {
+      value: 50,
+      tag: "fu_50",
+      title: "Professional Hater",
+      subtitle: "50 F.U.s Delivered"
+    },
+    {
+      value: 100,
+      tag: "fu_100",
+      title: "Hatred Is A Craft",
+      subtitle: "100 F.U.s Delivered"
+    },
+    {
+      value: 250,
+      tag: "fu_250",
+      title: "The Message Has Been Delivered",
+      subtitle: "250 F.U.s Delivered"
+    }
+  ],
+
+  polka_count: [
+    {
+      value: 25,
+      tag: "polka_25",
+      title: "POLKA WILL NEVER DIE!",
+      subtitle: "25 Polka Incidents Recorded"
+    },
+    {
+      value: 100,
+      tag: "polka_100",
+      title: "Butters Approved",
+      subtitle: "100 Polka Incidents Recorded"
+    }
+  ],
+
+  crop_dusted_count: [
+    {
+      value: 50,
+      tag: "crop_dust_50",
+      title: "Wrong Place, Wrong Time",
+      subtitle: "Affected by Crop Dusting 50 Times"
+    },
+    {
+      value: 100,
+      tag: "crop_dust_100",
+      title: "Collateral Damage",
+      subtitle: "Affected by Crop Dusting 100 Times"
+    },
+    {
+      value: 250,
+      tag: "crop_dust_250",
+      title: "Area Denial Victim",
+      subtitle: "Affected by Crop Dusting 250 Times"
+    }
+  ],
+
+  fu_victim_count: [
+    {
+      value: 50,
+      tag: "victim_50",
+      title: "Why Me?",
+      subtitle: "Received 50 F.U.s"
+    },
+    {
+      value: 100,
+      tag: "victim_100",
+      title: "Rent Free",
+      subtitle: "Received 100 F.U.s"
+    },
+    {
+      value: 250,
+      tag: "victim_250",
+      title: "Frequent Recipient",
+      subtitle: "Received 250 F.U.s"
+    }
+  ],
+
+  silly_goose_count: [
+    {
+      value: 25,
+      tag: "goose_25",
+      title: "The Goose Notices",
+      subtitle: "Visited by Goose 25 Times"
+    },
+    {
+      value: 100,
+      tag: "goose_100",
+      title: "Chosen By Goose",
+      subtitle: "Visited by Goose 100 Times"
+    }
+  ]
+
+};

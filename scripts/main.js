@@ -1,8 +1,8 @@
 import { MODULE_ID } from "./constants.js";
 import { createHUD } from "./hud.js";
 import { registerSocketHandlers, brfbSocket } from "./socket.js";
-import { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound, sillyGoose, polkaNeverDies } from "./effects.js";
-
+//import { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound, sillyGoose, polkaNeverDies } from "./effects.js";
+import { localHallOfShame } from "./hall_of_shame.js";
 Hooks.once("init", () => {
 
   game.settings.register(
@@ -32,28 +32,6 @@ Hooks.once("init", () => {
 
   game.settings.register(
     MODULE_ID,
-    "fartCount",
-    {
-      scope: "world",
-      config: false,
-      type: Number,
-      default: 0
-    }
-  );
-
-  game.settings.register(
-    MODULE_ID,
-    "fartAchievements",
-    {
-      scope: "world",
-      config: false,
-      type: Array,
-      default: []
-    }
-  );
-
-  game.settings.register(
-    MODULE_ID,
     "playerAchievements",
     {
       scope: "world",
@@ -66,6 +44,17 @@ Hooks.once("init", () => {
   game.settings.register(
     MODULE_ID,
     "playerScores",
+    {
+      scope: "world",
+      config: false,
+      type: Object,
+      default: {}
+    }
+  );
+
+  game.settings.register(
+    MODULE_ID,
+    "globalScores",
     {
       scope: "world",
       config: false,
@@ -110,6 +99,7 @@ Hooks.on("createChatMessage", async (message) => {
 
 Hooks.once("ready", () => {
   createHUD();
-  globalThis.BRFB = { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound, sillyGoose, polkaNeverDies };
+  globalThis.BRFB = { localHallOfShame };
+  globalThis.BRFBSocket = brfbSocket;
 });
 

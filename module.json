@@ -24,7 +24,7 @@
       "type": "Macro",
       "path": "packs/big-red-fart-button-macros",
       "system": "fate-core-official",
-      "banner": "modules/brfb/assets/banner.jpg",
+      
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -46,6 +46,12 @@
       }
     ]
   },
+  "media": [
+    {
+      "type": "cover",
+      "url": "modules/brfb/assets/banner.jpg"
+    }
+  ],
   "socket": true,
   "download": "https://github.com/gryvon/brfb/releases/download/v0.1.12/brfbv0.1.12.zip",
   "url": "https://github.com/gryvon/brfb",

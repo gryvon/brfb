@@ -2,7 +2,7 @@
   position: fixed;
   z-index: 9999;
 
-  width: 220px;
+  width: 270px;
 
   background: #222;
 
@@ -20,7 +20,6 @@
     color: white;
     cursor: move;
     height: 20px;
-    /* width: auto !important; */
     font-size: 10px;
 }
 
@@ -109,6 +108,18 @@
 
   animation:
     brfb-polka-pulse 2s infinite;
+}
+
+.brfb-shame {
+
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      #b84b4b,
+      #4f0000
+    );
+
+  color: black;
 }
 
 @keyframes brfb-polka-pulse {

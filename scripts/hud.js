@@ -1,6 +1,5 @@
 import { MODULE_ID, FART_COOLDOWN, FU_COOLDOWN, FART_MESSAGES } from "./constants.js";
 import { brfbSocket } from "./socket.js";
-import { unlockAchievement, unlockPlayerAchievement } from "./effects.js";
 
 let COOLDOWN = 15000;
 let lastPressed = 0;
@@ -44,20 +43,24 @@ export function createHUD() {
 
     <div class="brfb-content ${collapsed ? "collapsed" : ""}">
 
-      <button class="brfb-hud-button brfb-fart">
+      <button title="Big Red Fart Button" class="brfb-hud-button brfb-fart">
         💨
       </button>
 
-      <button class="brfb-hud-button brfb-fu">
+      <button title="Fuck you!" class="brfb-hud-button brfb-fu">
         🖕
       </button>
 
-      <button class="brfb-hud-button brfb-goose">
+      <button title="Silly Goose" class="brfb-hud-button brfb-goose">
         🪿
       </button>
 
-      <button class="brfb-hud-button brfb-polka">
+      <button title="Polka!" class="brfb-hud-button brfb-polka">
         🎺
+      </button>
+
+      <button title="Hall of Shame" class="brfb-hud-button brfb-shame">
+        🏆
       </button>
 
     </div>
@@ -81,6 +84,8 @@ function activateListeners(hud) {
 
   hud.querySelector(".brfb-polka").addEventListener("click", polkaPressed);
 
+  hud.querySelector(".brfb-shame").addEventListener("click", shamePressed);
+
   hud.querySelector(".brfb-toggle").addEventListener("click",() => toggleHUD(hud));
 }
 
@@ -100,8 +105,6 @@ function cooldown() {
 
 async function fartPressed() {
 
-  if (cooldown()) return;
-
   const selected = canvas.tokens.controlled;
 
   if (!selected.length) {
@@ -109,27 +112,21 @@ async function fartPressed() {
     return;
   }
 
-  const payload = selected.map( token => ({ tokenId: token.id, message: randomItem(FART_MESSAGES) }) );
+  if (cooldown()) return;
 
-  await brfbSocket.executeForEveryone("playFartEffects", payload);
-  
-  await new Promise(resolve => setTimeout(resolve, 2400));
+  const selectedTokenIds = canvas.tokens.controlled.map(token => token.id);
 
-  await brfbSocket.executeAsGM("incrementFartCount", game.user);
-  await brfbSocket.executeForEveryone("cropDust", selected.map(t => t.id));
-  await brfbSocket.executeAsGM("incrementCropDustCount", selected.map(t => t.id));
+  await brfbSocket.executeAsGM("requestFlatulence", selectedTokenIds);
 }
 
 async function fuPressed() {
-
-  if (cooldown()) return;
-
   const selected = canvas.tokens.controlled;
-
   if (selected.length !== 1) {
     ui.notifications.warn("Select exactly one token.");
     return;
   }
+
+  const selectedToken = selected[0];
 
   const targets = [...game.user.targets];
 
@@ -138,39 +135,51 @@ async function fuPressed() {
     return;
   }
 
-  const socket = game.modules.get(MODULE_ID)?.socket;
+  if (cooldown()) return;
 
-  if (!socket) {
-    ui.notifications.error("Socket not available.");
-    return;
-  }
+  const targetedTokenIds = targets.map(token => token.id);
 
-  await brfbSocket.executeForEveryone("playFUEffects", { sourceId: selected[0].id, targetIds: targets.map(t => t.id) });
-  await brfbSocket.executeAsGM("incrementFUCount", game.user);
-  await brfbSocket.executeAsGM("incrementFUVictimCount", targets);
+  await brfbSocket.executeAsGM("requestFU", selectedToken.id, targetedTokenIds);
+
 }
 
 async function goosePressed() {
 
+  const selected = canvas.tokens.controlled;
+
+  if (selected.length !== 1) {
+    ui.notifications.warn("Select exactly one token.");
+    return;
+  }
+
   if (cooldown()) return;
 
-  const selected = canvas.tokens.controlled[0];
-
-  await brfbSocket.executeForEveryone("playGlobalSound", "goose_honk.mp3");
-  await brfbSocket.executeForEveryone("floatingTextOnToken", selected.id, "🪿", 15000)
-
+  await brfbSocket.executeAsGM("requestSillyGoose", selected[0].id);
 }
 
 async function polkaPressed() {
 
+  const selected = canvas.tokens.controlled;
+
+  if (selected.length !== 1) {
+    ui.notifications.warn("Select exactly one token.");
+    return;
+  }
+
   if (cooldown()) return;
 
-  const selected = canvas.tokens.controlled[0];
-
-  await brfbSocket.executeForEveryone("polkaNeverDies", selected.id);
+  await brfbSocket.executeAsGM("requestPolka", selected[0].id);
 
 }
 
+async function shamePressed() {
+  if (game.user.isGM) {
+    await brfbSocket.executeAsGM("broadcastHallOfShame");
+  }
+  else {
+    await BRFB.localHallOfShame();
+  }
+}
 
 async function toggleHUD(hud) {
 
