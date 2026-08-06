@@ -17,20 +17,6 @@
   "styles": [
     "styles/brfb.css"
   ],
-  "packs": [
-    {
-      "name": "big-red-fart-button-macros",
-      "label": "Big Red Fart Button Macros",
-      "type": "Macro",
-      "path": "packs/big-red-fart-button-macros",
-      "system": "fate-core-official",
-      
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    }
-  ],
   "relationships": {
     "requires": [
       {
