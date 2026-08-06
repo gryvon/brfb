@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./constants.js";
 import { brfbSocket } from "./socket.js";
+import { wait } from "./helpers.js";
 
 function getRandomParkourDestination(token) {
 
@@ -50,67 +51,31 @@ const dy =
 
 export async function requestParkour(tokenId) {
 
-  ui.notifications.info(
-    "Click a destination."
-  );
+  ui.notifications.info("Click a destination.");
 
-  const token =
-    canvas.tokens.get(tokenId);
+  const token = canvas.tokens.get(tokenId);
 
   if (!token) return;
 
-  canvas.stage.once(
-    "pointerdown",
+  canvas.stage.once("pointerdown",
     async event => {
+    	const pos = event.data.getLocalPosition(canvas.stage);
+    	const gridSize = canvas.dimensions.size;
+    	const x = Math.round(pos.x / gridSize) * gridSize;
+    	const y = Math.round(pos.y / gridSize) * gridSize;
+//		const snapped = canvas.grid.getSnappedPoint(pos);
 
-      const pos =
-        event.data.getLocalPosition(
-          canvas.stage
-        );
+//		const destination = { x: snapped.x, y: snapped.y };
 
-      const gridSize =
-        canvas.dimensions.size;
+		const destination = canvas.grid.getSnappedPoint(pos, { mode: 512 });
 
-      const x =
-        Math.round(pos.x / gridSize) *
-        gridSize;
-
-      const y =
-        Math.round(pos.y / gridSize) *
-        gridSize;
-
-      const collision =
-        CONFIG.Canvas
-          .polygonBackends
-          .move
-          .testCollision(
-            {
-              x: token.center.x,
-              y: token.center.y
-            },
-            {
-              x: x + token.w / 2,
-              y: y + token.h / 2
-            },
-            {
-              type: "move"
-            }
-          );
-
-      if (collision.length) {
-
-        ui.notifications.warn(
-          "No Can Do. There's a Wall."
-        );
-
-        return;
-      }
-
-      await brfbSocket.executeAsGM(
-        "playParkour",
-        tokenId,
-        { x, y }
-      );
+    	//const collision = CONFIG.Canvas.polygonBackends.move.testCollision({ x: token.center.x, y: token.center.y }, { x: x + token.w / 2, y: y + token.h / 2 }, { type: "move" });
+    	const collision = CONFIG.Canvas.polygonBackends.move.testCollision({ x: token.center.x, y: token.center.y }, { x: destination.x, y: destination.y }, { type: "move" });
+    	if (collision.length) {
+        	ui.notifications.warn("No Can Do. There's a Wall.");
+        	return;
+    	}
+    	await brfbSocket.executeAsGM("playParkour", tokenId, { x: destination.x, y: destination.y });
     }
   );
 }
@@ -119,58 +84,11 @@ export async function parkour(tokenId) {
 	await brfbSocket.executeAsGM("playParkour", tokenId);
 }
 
-
-export async function playParkour(
-  tokenId,
-  destination
-) {
-
-  const token =
-    canvas.tokens.get(tokenId);
-
-  if (!token) return;
-
-  await brfbSocket.executeForEveryone(
-    "floatingTextOnToken",
-    tokenId,
-    "🏃 PARKOUR!",
-    3000,
-    "#00ff00",
-    true
-  );
-
-  await brfbSocket.executeForEveryone(
-    "playGlobalSound",
-    "parkour.mp3"
-  );
-
-  await token.document.update(
-    destination,
-    {
-      animate: true
-    }
-  );
-}
-
-/*export async function playParkour(tokenId) {
+export async function playParkour(tokenId, destination) {
 	const token = canvas.tokens.get(tokenId);
-	if (!token) { return; }
-
-	const destination = getRandomParkourDestination(token);
-
-	if (!destination) {
-		ui.notifications.warn(
-			"Nowhere to parkour!"
-		);
-
-		return;
-	}
-
+	if (!token) return;
 	await brfbSocket.executeForEveryone("floatingTextOnToken", tokenId, "🏃 PARKOUR!", 3000, "#00ff00", true);
-
 	await brfbSocket.executeForEveryone("playGlobalSound", "parkour.mp3");
-
-	// await new Sequence().effect().atLocation(token).file("jb2a.jump.01").play();
-
-	await token.document.update(destination, { animate: true });
-}*/
+	await token.document.update(destination, {animate: true});
+	await token.document.update(destination, {animate: true});
+}
