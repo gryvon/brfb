@@ -8,6 +8,7 @@ import { requestPolka, polkaNeverDies } from "./polka.js";
 import { requestAchievement, playAchievement } from "./achievements.js";
 import { broadcastHallOfShame, showHallOfShame } from "./hall_of_shame.js";
 import { playParkour } from "./parkour.js";
+import { requestSkillIssue, playSkillIssue } from "./skill_issue.js";
 
 export let brfbSocket;
 
@@ -58,5 +59,9 @@ export function registerSocketHandlers() {
 
   // Parkour!
   brfbSocket.register("playParkour", playParkour);
+
+  // Skill Issue
+  brfbSocket.register("requestSkillIssue", requestSkillIssue);
+  brfbSocket.register("playSkillIssue", playSkillIssue);
 
 }

@@ -92,9 +92,11 @@ Hooks.on("createChatMessage", async (message) => {
     await unlockPlayerAchievement(user, "rolled_like_shit", "TASK FAILED SUCCESSFULLY!", "Rolled - - - -")
   }
 
-  const total = roll.total;
+  const tokenId = message.speaker.token;
 
-  // Poor Rolls Dresden Narrator Here.
+  if (tokenId && message.rolls[0].total < 0) {
+    await brfbSocket.executeAsGM("requestSkillIssue", tokenId);
+  }
  
 });
 
