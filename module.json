@@ -1,7 +1,7 @@
 {
   "id": "brfb",
   "title": "Big Red Fart Button",
-  "version": "0.2.0",
+  "version": "0.2.2: PARKOUR!",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
@@ -39,7 +39,7 @@
     }
   ],
   "socket": true,
-  "download": "https://github.com/gryvon/brfb/releases/download/v0.2.0/brfbv0.2.0.zip",
+  "download": "https://github.com/gryvon/brfb/releases/download/v0.2.2/brfbv0.2.2.zip",
   "url": "https://github.com/gryvon/brfb",
   "manifest": "https://raw.githubusercontent.com/gryvon/brfb/refs/heads/main/module.json"
 }
