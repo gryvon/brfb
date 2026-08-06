@@ -104,6 +104,5 @@ Hooks.once("ready", () => {
   createHUD();
   globalThis.BRFB = { localHallOfShame, parkour, requestParkour };
   globalThis.BRFBSocket = brfbSocket;
-  console.log("ready", brfbSocket);
 });
 
