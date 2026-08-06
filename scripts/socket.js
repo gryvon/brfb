@@ -7,7 +7,7 @@ import { requestSillyGoose, playSillyGoose } from "./silly_goose.js";
 import { requestPolka, polkaNeverDies } from "./polka.js";
 import { requestAchievement, playAchievement } from "./achievements.js";
 import { broadcastHallOfShame, showHallOfShame } from "./hall_of_shame.js";
-
+import { playParkour } from "./parkour.js";
 
 export let brfbSocket;
 
@@ -55,5 +55,8 @@ export function registerSocketHandlers() {
   // Hall of Shame
   brfbSocket.register("broadcastHallOfShame", broadcastHallOfShame);
   brfbSocket.register("showHallOfShame", showHallOfShame);
+
+  // Parkour!
+  brfbSocket.register("playParkour", playParkour);
 
 }

@@ -3,6 +3,7 @@ import { createHUD } from "./hud.js";
 import { registerSocketHandlers, brfbSocket } from "./socket.js";
 //import { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound, sillyGoose, polkaNeverDies } from "./effects.js";
 import { localHallOfShame } from "./hall_of_shame.js";
+import { requestParkour, parkour } from "./parkour.js";
 Hooks.once("init", () => {
 
   game.settings.register(
@@ -99,7 +100,8 @@ Hooks.on("createChatMessage", async (message) => {
 
 Hooks.once("ready", () => {
   createHUD();
-  globalThis.BRFB = { localHallOfShame };
+  globalThis.BRFB = { localHallOfShame, parkour, requestParkour };
   globalThis.BRFBSocket = brfbSocket;
+  console.log("ready", brfbSocket);
 });
 

@@ -1,5 +1,6 @@
 import { MODULE_ID, FART_COOLDOWN, FU_COOLDOWN, FART_MESSAGES } from "./constants.js";
 import { brfbSocket } from "./socket.js";
+import { requestParkour } from "./parkour.js";
 
 let COOLDOWN = 15000;
 let lastPressed = 0;
@@ -59,6 +60,10 @@ export function createHUD() {
         🎺
       </button>
 
+      <button title="Parkour!" class="brfb-hud-button brfb-parkour">
+        🏃
+      </button>
+
       <button title="Hall of Shame" class="brfb-hud-button brfb-shame">
         🏆
       </button>
@@ -83,6 +88,8 @@ function activateListeners(hud) {
   hud.querySelector(".brfb-goose").addEventListener("click", goosePressed);
 
   hud.querySelector(".brfb-polka").addEventListener("click", polkaPressed);
+
+  hud.querySelector(".brfb-parkour").addEventListener("click", parkourPressed);
 
   hud.querySelector(".brfb-shame").addEventListener("click", shamePressed);
 
@@ -169,6 +176,21 @@ async function polkaPressed() {
   if (cooldown()) return;
 
   await brfbSocket.executeAsGM("requestPolka", selected[0].id);
+
+}
+
+async function parkourPressed() {
+
+  const selected = canvas.tokens.controlled;
+
+  if (selected.length !== 1) {
+    ui.notifications.warn("Select exactly one token.");
+    return;
+  }
+
+  if (cooldown()) return;
+
+  await requestParkour(selected[0].id);
 
 }
 
