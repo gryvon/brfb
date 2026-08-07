@@ -9,6 +9,7 @@ import { requestAchievement, playAchievement } from "./achievements.js";
 import { broadcastHallOfShame, showHallOfShame } from "./hall_of_shame.js";
 import { playParkour } from "./parkour.js";
 import { requestSkillIssue, playSkillIssue } from "./skill_issue.js";
+import { playPinkiePie } from "./pinkie_pie.js";
 
 export let brfbSocket;
 
@@ -63,5 +64,8 @@ export function registerSocketHandlers() {
   // Skill Issue
   brfbSocket.register("requestSkillIssue", requestSkillIssue);
   brfbSocket.register("playSkillIssue", playSkillIssue);
+
+  // Pinkie Pie
+  brfbSocket.register("playPinkiePie", playPinkiePie);
 
 }

@@ -4,6 +4,8 @@ import { registerSocketHandlers, brfbSocket } from "./socket.js";
 //import { unlockAchievement, unlockPlayerAchievement, hallOfShame, floatingText, playSound, sillyGoose, polkaNeverDies } from "./effects.js";
 import { localHallOfShame } from "./hall_of_shame.js";
 import { requestParkour, parkour } from "./parkour.js";
+import { pinkiePie } from "./pinkie_pie.js";
+
 Hooks.once("init", () => {
 
   game.settings.register(
@@ -100,9 +102,19 @@ Hooks.on("createChatMessage", async (message) => {
  
 });
 
-Hooks.once("ready", () => {
+Hooks.once("ready", async () => {
+
+  let pinkiePieImg;
+
+  pinkiePieImg = new Image();
+  pinkiePieImg.src = `modules/${MODULE_ID}/assets/pinkie_pie.gif`;
+  await pinkiePieImg.decode();
+
+  console.log("Pinkie Pie Loaded.")
+
   createHUD();
-  globalThis.BRFB = { localHallOfShame, parkour, requestParkour };
+  globalThis.BRFB = { localHallOfShame, parkour, requestParkour, pinkiePie, pinkiePieImg };
   globalThis.BRFBSocket = brfbSocket;
+
 });
 

@@ -459,3 +459,70 @@
 
   justify-content: center;
 }
+
+#brfb-pinkie {
+
+  position: fixed;
+
+  width: 350px;
+
+  z-index: 999999;
+
+  pointer-events: none;
+}
+
+.brfb-pinkie-left {
+
+  left: -400px;
+
+  animation:
+    brfb-pinkie-left 12s linear forwards;
+}
+
+.brfb-pinkie-right {
+
+  right: -400px;
+
+  transform: scaleX(-1);
+
+  animation:
+    brfb-pinkie-right 12s linear forwards;
+}
+
+@keyframes brfb-pinkie-left {
+
+  0% {
+    left: -400px;
+  }
+
+  30% {
+    left: 35%;
+  }
+
+  70% {
+    left: 35%;
+  }
+
+  100% {
+    left: 110%;
+  }
+}
+
+@keyframes brfb-pinkie-right {
+
+  0% {
+    right: -400px;
+  }
+
+  30% {
+    right: 35%;
+  }
+
+  70% {
+    right: 35%;
+  }
+
+  100% {
+    right: 110%;
+  }
+}
