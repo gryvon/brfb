@@ -26,13 +26,7 @@ async function playGasCloud(tokenId) {
 }
 
 async function playFartMessage(tokenId, message) {
-	await floatingTextOnToken(
-	  tokenId,
-	  message,
-	  8000,
-	  "#6B5B3E",
-	  false
-	);
+	await floatingTextOnToken(tokenId, message, 8000, "#6B5B3E", false);
 }
 
 async function cropDust(tokenId) {
@@ -50,10 +44,7 @@ async function cropDust(tokenId) {
 	}
 }
 
-async function commenceEpicFlatulence(tokenId, sound, message) {
-	// Play Sound
-	await playFartSound(sound);
-
+async function commenceEpicFlatulence(tokenId, message) {
 	// Gas Cloud
 	await playGasCloud(tokenId);
 
@@ -62,18 +53,18 @@ async function commenceEpicFlatulence(tokenId, sound, message) {
 
 	// Crop Dust
 	await cropDust(tokenId);
-
-	// Increase Score
-	const users = getTokenOwners(tokenId);
-	for (const user of users) {
-		incrementPlayerCount(user.id, "fart_count");
-	}
 }
 
 export async function requestFlatulence(selectedTokenIds) {
+	// One fart sound.
+	await brfbSocket.executeForEveryone("playGlobalSound", randomItem(FART_SOUNDS));
+
 	for (const tokenId of selectedTokenIds) {
 		const message = randomItem(FART_MESSAGES);
-		const sound = randomItem(FART_SOUNDS);
-		await commenceEpicFlatulence(tokenId, sound, message);
+		await commenceEpicFlatulence(tokenId, message);
+		const users = getTokenOwners(tokenId);
+		for (const user of users) {
+			await incrementPlayerCount(user.id, "fart_count");
+		}
 	}
 }
