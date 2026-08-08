@@ -526,3 +526,36 @@
     right: 110%;
   }
 }
+
+#brfb-duck {
+
+  position: fixed;
+
+  width: 96px;
+  height: 120px;
+
+  top: -100px;
+  left: -100px;
+
+  z-index: 999999;
+
+  pointer-events: none;
+
+  animation:
+    brfb-duck-walk 24s linear forwards;
+}
+
+@keyframes brfb-duck-walk {
+
+  from {
+
+    top: -120px;
+    left: -96px;
+  }
+
+  to {
+
+    top: calc(100vh + 120px);
+    left: calc(100vw + 120px);
+  }
+}

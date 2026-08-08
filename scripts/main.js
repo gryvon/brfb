@@ -5,6 +5,7 @@ import { registerSocketHandlers, brfbSocket } from "./socket.js";
 import { localHallOfShame } from "./hall_of_shame.js";
 import { requestParkour, parkour } from "./parkour.js";
 import { pinkiePie } from "./pinkie_pie.js";
+import { spawnDuck, startDuckTimer, requestToggleDuck, requestSpawnDuck } from "./duck_walk.js";
 
 Hooks.once("init", () => {
 
@@ -66,6 +67,17 @@ Hooks.once("init", () => {
     }
   );
 
+  game.settings.register(
+    MODULE_ID,
+    "duckEnabled",
+    {
+      scope: "world",
+      config: false,
+      type: Boolean,
+      default: {}
+    }
+  );
+
 });
 
 Hooks.once("socketlib.ready", () => {
@@ -105,16 +117,25 @@ Hooks.on("createChatMessage", async (message) => {
 Hooks.once("ready", async () => {
 
   let pinkiePieImg;
+  let duckWalkImg;
 
   pinkiePieImg = new Image();
   pinkiePieImg.src = `modules/${MODULE_ID}/assets/pinkie_pie.gif`;
   await pinkiePieImg.decode();
+  duckWalkImg = new Image();
+  duckWalkImg.src = `modules/${MODULE_ID}/assets/duck.gif`;
+  await duckWalkImg.decode();
+  const audio = new Audio(`modules/${MODULE_ID}/sounds/duck_song.mp3`);
+  await new Promise(resolve => { audio.addEventListener( "canplaythrough", resolve, { once: true } );
+  audio.load();
+  });
 
-  console.log("Pinkie Pie Loaded.")
+  console.log("Preloads ready.")
 
   createHUD();
-  globalThis.BRFB = { localHallOfShame, parkour, requestParkour, pinkiePie, pinkiePieImg };
+  globalThis.BRFB = { localHallOfShame, parkour, requestParkour, pinkiePie, spawnDuck, requestToggleDuck, requestSpawnDuck };
   globalThis.BRFBSocket = brfbSocket;
 
-});
+  if (game.user.name === "Lee") { startDuckTimer(); }
 
+});

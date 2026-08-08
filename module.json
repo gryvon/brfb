@@ -1,14 +1,14 @@
 {
   "id": "brfb",
   "title": "Big Red Fart Button",
-  "version": "0.2.3",
+  "version": "0.2.6",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
   },
   "authors": [
     {
-      "name": "You"
+      "name": "clusterphunk"
     }
   ],
   "esmodules": [
@@ -39,7 +39,7 @@
     }
   ],
   "socket": true,
-  "download": "https://github.com/gryvon/brfb/releases/download/v0.2.3/brfbv0.2.3.zip",
+  "download": "https://github.com/gryvon/brfb/releases/download/v0.2.6/brfbv0.2.6.zip",
   "url": "https://github.com/gryvon/brfb",
   "manifest": "https://raw.githubusercontent.com/gryvon/brfb/refs/heads/main/module.json"
 }

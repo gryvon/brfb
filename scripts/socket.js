@@ -10,6 +10,7 @@ import { broadcastHallOfShame, showHallOfShame } from "./hall_of_shame.js";
 import { playParkour } from "./parkour.js";
 import { requestSkillIssue, playSkillIssue } from "./skill_issue.js";
 import { playPinkiePie } from "./pinkie_pie.js";
+import { toggleDuck, requestToggleDuck, spawnDuck } from "./duck_walk.js";
 
 export let brfbSocket;
 
@@ -68,4 +69,8 @@ export function registerSocketHandlers() {
   // Pinkie Pie
   brfbSocket.register("playPinkiePie", playPinkiePie);
 
+  // Duck
+  brfbSocket.register("requestToggleDuck", requestToggleDuck);
+  brfbSocket.register("toggleDuck", toggleDuck);
+  brfbSocket.register("spawnDuck", spawnDuck);
 }
